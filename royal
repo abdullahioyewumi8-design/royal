@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Royal Restro — Full Page</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#ff8a00;
+      --muted:#6b6b6b;
+      --bg:#fafafa;
+      --card-border:#dfd7cc;
+      --max-width:1200px;
+      --radius:10px;
+      --gap:14px;
+      --accent-gold:#f4c10f;
+      --footer-pad:28px;
+      --active-ring: 0 0 0 8px rgba(255,138,0,0.12), 0 0 0 3px var(--accent);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);font-family:'Poppins',sans-serif;color:#222;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+
+    /* Header */
+    header{background:#111;color:#fff}
+    .hero{
+      position:relative;
+      height:52vh;
+      min-height:320px;
+      color:white;
+      text-align:center;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hero__bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center 18%;
+      filter:brightness(.46);
+      z-index:0;
+    }
+    .hero__overlay{position:absolute;inset:0;background:rgba(0,0,0,0.25);z-index:1}
+    .hero__content{position:relative;z-index:2;padding:22px;max-width:980px;margin:0 18px;display:flex;flex-direction:column;align-items:center;gap:8px}
+    .hero__crest-img{
+      width:96px;
+      height:96px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.06);
+      padding:10px;
+      box-shadow:0 10px 26px rgba(0,0,0,0.22);
+      object-fit:contain;
+      margin:0 auto 6px;
+      transition:transform .16s,box-shadow .16s;
+    }
+    .hero__crest-img:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.28)}
+    .hero__title{font-size:32px;margin:0;color:var(--accent-gold);font-weight:800;letter-spacing:1px}
+    .hero__sub{font-size:14px;margin:0;color:rgba(255,255,255,0.95)}
+
+    /* Delivery buttons area in header */
+    .hero__cta{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-top:6px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .cta-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      color:#111;
+      text-decoration:none;
+      height:40px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.12);
+      font-weight:700;
+      font-size:13px;
+    }
+    .cta-link .badge{
+      width:28px;height:28px;border-radius:8px;overflow:hidden;display:inline-grid;place-items:center;background:transparent;padding:2px;
+    }
+    .cta-link.zomato .badge img{width:22px;height:22px;object-fit:contain}
+    .cta-link.swiggy .badge img{width:22px;height:22px;object-fit:contain}
+
+    /* Layout */
+    .container{max-width:var(--max-width);margin:18px auto;padding:0 18px}
+    .section-title{font-size:20px;margin:6px 0 12px;color:#222;font-weight:600}
+
+    /* Categories */
+    .category-wrap{margin:8px 0 18px}
+    .category-grid{display:flex;gap:12px;overflow-x:auto;padding:8px 6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+    .category-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;border:0;background:transparent;padding:6px;cursor:pointer;min-width:120px;border-radius:12px;outline:none;transition:transform .12s}
+    .category-btn .thumb{width:140px;height:200px;border-radius:var(--radius);overflow:hidden;background:#f5f5f5;display:flex;align-items:center;justify-content:center;transition:box-shadow .12s,transform .12s}
+    .category-btn img{width:100%;height:100%;object-fit:cover;display:block}
+    .category-name{
+      font-size:13px;
+      color:var(--muted);
+      text-align:center;
+      white-space:nowrap;
+      font-family: 'Poppins', sans-serif;
+      font-weight:800;
+    }
+    .category-btn.active .thumb{ box-shadow: var(--active-ring); transform: translateY(-6px) scale(1.02); }
+    .category-btn:focus-visible{outline:3px solid rgba(255,138,0,0.14);z-index:3}
+
+    /* Menu grid */
+    .menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap)}
+    .menu-item{display:flex;gap:12px;background:#fff;padding:12px;border-radius:10px;align-items:center;border:1px solid var(--card-border);box-shadow:0 6px 12px rgba(0,0,0,0.06);transition:transform .12s,box-shadow .12s,border-color .12s;min-height:112px}
+    .menu-item:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(0,0,0,0.12);border-color:#d1a14a}
+
+    /* Square, well-fitted images for menu cards */
+    .menu-item img{
+      width:96px;
+      height:96px;
+      object-fit:cover;
+      border-radius:8px;
+      flex-shrink:0;
+      border:1px solid rgba(0,0,0,0.04);
+      display:block;
+    }
+
+    .meta{display:flex;flex-direction:column;gap:6px;width:100%}
+    .category{
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      color:var(--accent);
+      letter-spacing:0.6px;
+      margin-bottom:4px;
+      font-family: 'Poppins', sans-serif;
+    }
+    .title-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .title-row h3{margin:0;font-size:16px;font-weight:600}
+    .price{font-weight:800;color:#333}
+
+    /* Footer */
+    footer{background:#111;color:#fff;padding:var(--footer-pad) 18px}
+    .footer-inner{max-width:var(--max-width);margin:0 auto;display:flex;flex-direction:column;gap:18px}
+
+    /* Gallery (enlarged) */
+    .gallery-wrap{margin-top:6px}
+    .gallery-wrap h3{margin:0 0 8px;color:var(--accent-gold);font-size:18px}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .gallery-grid img{width:100%;height:220px;object-fit:cover;border-radius:10px;cursor:pointer;display:block}
+
+    /* Footer top */
+    .footer-top{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+    .hours-box, .map-and-dir, .reserve-box{background:transparent;color:#fff;border-radius:10px}
+    .hours-box{flex:0 0 240px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.04)}
+    .hours-box h3{margin:0 0 10px;color:var(--accent-gold);font-size:16px}
+    .hours-box p{margin:6px 0;color:#ddd;font-size:14px;line-height:1.35}
+    .map-and-dir{flex:1;display:flex;flex-direction:column;gap:10px}
+    .map-top{display:flex;gap:10px;align-items:center;justify-content:flex-start}
+    .direction-btn{background:var(--accent);color:#111;padding:10px 14px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+    .map-frame{width:100%;height:260px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+    .reserve-box{flex:0 0 240px;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.04)}
+    .reserve-box h3{margin:0 0 10px;color:var(--accent-gold);font-size:16px}
+    .reserve-box p{margin:6px 0;color:#ddd;font-size:14px}
+    .contact-icons{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+    .contact-icons a{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.04);color:var(--accent-gold);font-size:18px}
+
+    .footer-bottom{text-align:center;color:#aaa;font-size:13px;padding:6px 0}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .menu-grid{grid-template-columns:1fr}
+      .gallery-grid{grid-template-columns:repeat(2,1fr)}
+      .map-frame{height:200px}
+      .hours-box, .reserve-box{flex:0 0 200px}
+      .hero{height:48vh;min-height:300px}
+    }
+
+    @media (max-width:600px){
+      .hero{height:34vh;min-height:160px}
+      .hero__title{font-size:22px}
+      .gallery-grid{grid-template-columns:1fr;gap:12px}
+      .gallery-grid img{
+        width:100%;
+        height:auto;
+        aspect-ratio:16/9;
+        object-fit:cover;
+        border-radius:12px;
+        display:block;
+      }
+      .footer-top{flex-direction:column;gap:12px}
+      .hours-box, .map-and-dir, .reserve-box{flex:none;width:100%}
+      .map-frame{height:280px;border-radius:12px}
+      .contact-icons a{width:48px;height:48px}
+      .category-grid{padding:8px 4px}
+      .category-btn .thumb{width:120px;height:170px}
+      .hero__crest-img{width:80px;height:80px;padding:8px}
+      /* Slightly smaller square on narrow screens */
+      .menu-item img{
+        width:84px;
+        height:84px;
+      }
+      .menu-item{ min-height:104px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Hero -->
+  <header>
+    <div class="hero" role="banner" aria-label="Royal Restro header">
+      <img class="hero__bg" src="https://royal-restro.netlify.app/assets/7-5830e8d9.jpg" alt="Royal Restro background">
+      <div class="hero__overlay" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <img class="hero__crest-img" src="https://royal-restro.netlify.app/assets/logo-a7f07122.png" alt="Royal Restro crest">
+        <h1 class="hero__title">ROYAL RESTRO</h1>
+        <p class="hero__sub">College Road, Hojai, Assam — 782435</p>
+
+       <nav class="hero__cta" role="navigation" aria-label="Delivery links" 
+     style="display: flex; gap: 14px; align-items: center;">
+
+  <!-- Zomato Button -->
+  <a href="https://royal-restro.netlify.app/assets/zomato-44c10cb5.png"
+     target="_blank" rel="noopener noreferrer" aria-label="Order on Zomato"
+     style="display: inline-flex; align-items: center; justify-content: center;
+            width: 130px; height: 44px; background: #fff; border-radius: 50px;
+            text-decoration: none; font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700; color: #E23744; font-size: 20px; 
+            letter-spacing: 0.3px; text-transform: lowercase;
+            text-shadow: -0.5px -0.5px 0 #b8202b, 0.5px -0.5px 0 #b8202b,
+                         -0.5px 0.5px 0 #b8202b, 0.5px 0.5px 0 #b8202b;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+    <span>zomato</span>
+  </a>
+
+  <!-- Swiggy Button -->
+  <a href="https://www.swiggy.com"
+     target="_blank" rel="noopener noreferrer" aria-label="Order on Swiggy"
+     style="display: inline-flex; align-items: center; justify-content: center;
+            width: 130px; height: 44px; background: #fff; border-radius: 50px;
+            text-decoration: none; font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+            font-weight: 700; color: #FC8019; font-size: 20px;
+            letter-spacing: 0.3px; text-transform: uppercase;
+            text-shadow: -0.5px -0.5px 0 #c75f00, 0.5px -0.5px 0 #c75f00,
+                         -0.5px 0.5px 0 #c75f00, 0.5px 0.5px 0 #c75f00;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg" style="margin-right:6px;">
+      <path d="M12 2C8.686 2 6 4.686 6 8c0 5.25 6 12 6 12s6-6.75 6-12c0-3.314-2.686-6-6-6zm0 8.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="#FC8019"/>
+    </svg>
+    <span>swiggy</span>
+  </a>
+
+</nav>
+
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container" id="menu" aria-live="polite">
+    <h2 class="section-title">Browse Menu</h2>
+
+    <div class="category-wrap" aria-label="Browse menu categories">
+      <div class="category-grid" role="tablist" id="categoryGrid" aria-label="Categories">
+        <button class="category-btn active" data-cat="all" role="tab" aria-selected="true" aria-pressed="true" tabindex="0">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categoryall-3f2cc21f.jpg" alt="All categories"></span>
+          <div class="category-name">All</div>
+        </button>
+
+        <button class="category-btn" data-cat="biryani" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categorybiryani-a481783a.jpg" alt="Biryani"></span>
+          <div class="category-name">Biryani</div>
+        </button>
+
+        <button class="category-btn" data-cat="starters" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categorystarters-6526b7a7.jpg" alt="Starters"></span>
+          <div class="category-name">Starters</div>
+        </button>
+
+        <button class="category-btn" data-cat="soup" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categorysoup-47172e3e.jpg" alt="Soup"></span>
+          <div class="category-name">Soup</div>
+        </button>
+
+        <button class="category-btn" data-cat="italian" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categorylittleitaly-3e944c6b.jpg" alt="Italian"></span>
+          <div class="category-name">Italian</div>
+        </button>
+
+        <button class="category-btn" data-cat="pizza" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categorypizza-2ac6d2e2.jpg" alt="Pizza"></span>
+          <div class="category-name">Pizza</div>
+        </button>
+
+        <button class="category-btn" data-cat="shakes" role="tab" aria-selected="false" aria-pressed="false" tabindex="-1">
+          <span class="thumb"><img src="https://royal-restro.netlify.app/assets/categoryshakes-1a06b006.jpg" alt="Shakes"></span>
+          <div class="category-name">Shakes</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="menu-grid" aria-label="Menu items">
+
+      <!-- Biryani -->
+      <article class="menu-item biryani">
+        <img src="https://royal-restro.netlify.app/assets/chickenbiryani-d1e04a9d.jpg" alt="Chicken Biryani">
+        <div class="meta">
+          <div class="category">Biryani</div>
+          <div class="title-row"><h3>Chicken Biryani</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item biryani">
+        <img src="https://royal-restro.netlify.app/assets/muttonbiryani-7a80d1a2.jpg" alt="Mutton Biryani">
+        <div class="meta">
+          <div class="category">Biryani</div>
+          <div class="title-row"><h3>Mutton Biryani</h3><div class="price">₦160</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item biryani">
+        <img src="https://royal-restro.netlify.app/assets/eggbiryani-ec0cf3e5.jpg" alt="Egg Biryani">
+        <div class="meta">
+          <div class="category">Biryani</div>
+          <div class="title-row"><h3>Egg Biryani</h3><div class="price">₦120</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item biryani">
+        <img src="https://royal-restro.netlify.app/assets/paneerbiryani-12a261d8.jpg" alt="Paneer Biryani">
+        <div class="meta">
+          <div class="category">Biryani</div>
+          <div class="title-row"><h3>Paneer Biryani</h3><div class="price">₦130</div></div>
+        </div>
+      </article>
+
+      <!-- Starters -->
+      <article class="menu-item starters">
+        <img src="https://royal-restro.netlify.app/assets/sandwich-de9f7368.jpg" alt="Sandwich">
+        <div class="meta">
+          <div class="category">Starters</div>
+          <div class="title-row"><h3>Sandwich</h3><div class="price">₦100</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item starters">
+        <img src="https://royal-restro.netlify.app/assets/fries-da9018a7.jpg" alt="French Fries">
+        <div class="meta">
+          <div class="category">Starters</div>
+          <div class="title-row"><h3>French Fries</h3><div class="price">₦80</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item starters">
+        <img src="https://royal-restro.netlify.app/assets/springrolls-00774bca.jpg" alt="Spring Rolls">
+        <div class="meta">
+          <div class="category">Starters</div>
+          <div class="title-row"><h3>Spring Rolls</h3><div class="price">₦90</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item starters">
+        <img src="https://royal-restro.netlify.app/assets/wings-cf6b77ec.jpg" alt="Chicken Wings">
+        <div class="meta">
+          <div class="category">Starters</div>
+          <div class="title-row"><h3>Chicken Wings</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+      <!-- Soup -->
+      <article class="menu-item soup">
+        <img src="https://royal-restro.netlify.app/assets/tomato-b597a6f9.jpg" alt="Tomato Soup">
+        <div class="meta">
+          <div class="category">Soup</div>
+          <div class="title-row"><h3>Tomato Soup</h3><div class="price">₦100</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item soup">
+        <img src="https://royal-restro.netlify.app/assets/chicken-af88438c.jpg" alt="Chicken Soup">
+        <div class="meta">
+          <div class="category">Soup</div>
+          <div class="title-row"><h3>Chicken Soup</h3><div class="price">₦80</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item soup">
+        <img src="https://royal-restro.netlify.app/assets/momo-a7e92b1f.jpg" alt="Momo Soup">
+        <div class="meta">
+          <div class="category">Soup</div>
+          <div class="title-row"><h3>Momo Soup</h3><div class="price">₦90</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item soup">
+        <img src="https://royal-restro.netlify.app/assets/noodles-e5d7901d.jpg" alt="Noodles Soup">
+        <div class="meta">
+          <div class="category">Soup</div>
+          <div class="title-row"><h3>Noodles Soup</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+      <!-- Italian -->
+      <article class="menu-item italian">
+        <img src="https://royal-restro.netlify.app/assets/pasta-2baaf971.jpg" alt="Pasta">
+        <div class="meta">
+          <div class="category">Italian</div>
+          <div class="title-row"><h3>Pasta</h3><div class="price">₦100</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item italian">
+        <img src="https://royal-restro.netlify.app/assets/bruschetta-463eb56a.jpg" alt="Bruschetta">
+        <div class="meta">
+          <div class="category">Italian</div>
+          <div class="title-row"><h3>Bruschetta</h3><div class="price">₦80</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item italian">
+        <img src="https://royal-restro.netlify.app/assets/lasagna-6ee2714e.jpg" alt="Lasagna">
+        <div class="meta">
+          <div class="category">Italian</div>
+          <div class="title-row"><h3>Lasagna</h3><div class="price">₦90</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item italian">
+        <img src="https://royal-restro.netlify.app/assets/margherita-4484540d.jpg" alt="Margherita">
+        <div class="meta">
+          <div class="category">Italian</div>
+          <div class="title-row"><h3>Margherita</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+      <!-- Shakes -->
+      <article class="menu-item shakes">
+        <img src="https://royal-restro.netlify.app/assets/mango-6e053d77.jpg" alt="Mango Shake">
+        <div class="meta">
+          <div class="category">Shakes</div>
+          <div class="title-row"><h3>Mango Shake</h3><div class="price">₦100</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item shakes">
+        <img src="https://royal-restro.netlify.app/assets/oreo-e7116559.jpg" alt="Oreo Shake">
+        <div class="meta">
+          <div class="category">Shakes</div>
+          <div class="title-row"><h3>Oreo Shake</h3><div class="price">₦80</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item shakes">
+        <img src="https://royal-restro.netlify.app/assets/faluda-a542ad33.jpg" alt="Faluda">
+        <div class="meta">
+          <div class="category">Shakes</div>
+          <div class="title-row"><h3>Faluda</h3><div class="price">₦90</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item shakes">
+        <img src="https://royal-restro.netlify.app/assets/chocolate-233e4c8f.jpg" alt="Chocolate Shake">
+        <div class="meta">
+          <div class="category">Shakes</div>
+          <div class="title-row"><h3>Chocolate Shake</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+      <!-- Pizza -->
+      <article class="menu-item pizza">
+        <img src="https://royal-restro.netlify.app/assets/chicken-a7813578.jpg" alt="Chicken Pizza">
+        <div class="meta">
+          <div class="category">Pizza</div>
+          <div class="title-row"><h3>Chicken Pizza</h3><div class="price">₦100</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item pizza">
+        <img src="https://royal-restro.netlify.app/assets/veg-ad6e1a5f.jpg" alt="Veg Pizza">
+        <div class="meta">
+          <div class="category">Pizza</div>
+          <div class="title-row"><h3>Veg Pizza</h3><div class="price">₦80</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item pizza">
+        <img src="https://royal-restro.netlify.app/assets/cheese-404fed99.jpg" alt="Cheese Pizza">
+        <div class="meta">
+          <div class="category">Pizza</div>
+          <div class="title-row"><h3>Cheese Pizza</h3><div class="price">₦90</div></div>
+        </div>
+      </article>
+
+      <article class="menu-item pizza">
+        <img src="https://royal-restro.netlify.app/assets/carbonara-ec0775c9.jpg" alt="Pizza Carbonara">
+        <div class="meta">
+          <div class="category">Pizza</div>
+          <div class="title-row"><h3>Pizza Carbonara</h3><div class="price">₦140</div></div>
+        </div>
+      </article>
+
+    </div> <!-- end .menu-grid -->
+
+    <hr style="border:none;height:12px;background:transparent;margin:22px 0;">
+  </main>
+
+  <!-- Footer with gallery first -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+
+      <!-- Gallery first -->
+      <div class="gallery-wrap" aria-label="Gallery">
+        <h3>Gallery</h3>
+        <div class="gallery-grid" aria-hidden="false">
+          <img src="https://royal-restro.netlify.app/assets/1-c5f9efb0.jpg" alt="Grilled kebab" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/4-90d6dd44.jpg" alt="Grilled kebab" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/2-f1f76590.jpg" alt="Chef plating" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/3-10700ce5.jpg" alt="Dining interior" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/5-9dfc56a5.jpg" alt="Assorted appetizers" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/6-64dad014.jpg" alt="Dessert" onclick="enlarge(this)" loading="lazy">
+          <img src="https://royal-restro.netlify.app/assets/7-5830e8d9.jpg" alt="Fresh salad" onclick="enlarge(this)" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80" alt="Chef preparing dish" onclick="enlarge(this)" loading="lazy">
+        </div>
+      </div>
+
+      <!-- Hours, Map (Get Direction), Reservations -->
+      <div class="footer-top" aria-label="Hours map reservations">
+        <div class="hours-box" aria-label="Opening hours">
+          <h3>We Are Open</h3>
+          <p><strong>Sunday</strong>: 6:00 PM – 11:00 PM</p>
+          <p><strong>Monday to Saturday</strong>: 9:00 AM – 11:00 PM</p>
+        </div>
+
+        <div class="map-and-dir" aria-label="Get Directions">
+          <div class="map-top">
+            <a class="direction-btn" href="https://www.google.com/maps/dir/?api=1&destination=College+Road+Hojai+Assam+782435" target="_blank" rel="noopener noreferrer" aria-label="Get directions">
+              <i class="fas fa-map-marker-alt" style="font-size:14px"></i>
+              GET DIRECTION
+            </a>
+          </div>
+          <div class="map-frame" role="region" aria-label="Map showing Royal Restro">
+            <iframe
+              title="Map to College Road Hojai Assam"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.902911841233!2d92.8575!3d26.0036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x374f5f5f5f5f5f5f%3A0x5f5f5f5f5f5f5f5f!2sCollege%20Road%2C%20Hojai%2C%20Assam%20782435!5e0!3m2!1sen!2sin!4v1697030400000!5m2!1sen!2sin"
+              width="100%" height="100%" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+
+        <div class="reserve-box" aria-label="Reservations">
+          <h3>Reservations</h3>
+          <p style="color:#ddd">Reserve a table or book online for quick seating.</p>
+          <div class="contact-icons" aria-label="Contact options">
+            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/royal.restro8355/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://web.facebook.com/profile.php?id=61582916930176" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">&copy; 2025 Royal Restro. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const grid = document.getElementById('categoryGrid');
+      const buttons = grid ? Array.from(grid.querySelectorAll('.category-btn')) : [];
+      const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+
+      function updateTabIndex(activeIndex){
+        buttons.forEach((b,i)=>{
+          b.setAttribute('tabindex', i===activeIndex ? '0' : '-1');
+        });
+      }
+
+      function setActive(btn){
+        const index = buttons.indexOf(btn);
+        buttons.forEach(b=>{
+          const active = b===btn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-pressed', String(active));
+          b.setAttribute('aria-selected', String(active));
+        });
+        if(index >= 0) updateTabIndex(index);
+        if(btn) btn.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+      }
+
+      function filterMenu(category){
+        menuItems.forEach(item => {
+          const match = !category || category === 'all' || item.classList.contains(category);
+          item.style.display = match ? 'flex' : 'none';
+          item.setAttribute('aria-hidden', String(!match));
+        });
+      }
+
+      if(grid){
+        grid.addEventListener('click', e=>{
+          const btn = e.target.closest('.category-btn');
+          if(!btn) return;
+          setActive(btn);
+          filterMenu(btn.dataset.cat);
+        });
+
+        grid.addEventListener('keydown', e=>{
+          const idx = buttons.findIndex(b => b.classList.contains('active'));
+          if(e.key === 'ArrowRight'){ e.preventDefault(); const next = (idx+1)%buttons.length; updateTabIndex(next); buttons[next].focus(); }
+          else if(e.key === 'ArrowLeft'){ e.preventDefault(); const prev = (idx-1+buttons.length)%buttons.length; updateTabIndex(prev); buttons[prev].focus(); }
+          else if(e.key === 'Home'){ e.preventDefault(); updateTabIndex(0); buttons[0].focus(); }
+          else if(e.key === 'End'){ e.preventDefault(); updateTabIndex(buttons.length-1); buttons[buttons.length-1].focus(); }
+          else if(e.key === 'Enter' || e.key === ' '){
+            const cur = document.activeElement.closest('.category-btn');
+            if(cur){ e.preventDefault(); setActive(cur); filterMenu(cur.dataset.cat); }
+          }
+        });
+
+        const initialIndex = buttons.findIndex(b => b.classList.contains('active'));
+        const initial = initialIndex >= 0 ? buttons[initialIndex] : buttons[0];
+        if(initial){
+          setActive(initial);
+          filterMenu(initial.dataset.cat);
+        }
+      }
+
+      window.enlarge = function(img){
+        const opener = img;
+        const modal = document.createElement('div');
+        modal.setAttribute('role','dialog');
+        modal.setAttribute('aria-modal','true');
+        modal.setAttribute('aria-label', img.alt || 'Enlarged image');
+        modal.style.position = 'fixed';
+        modal.style.inset = '0';
+        modal.style.background = 'rgba(0,0,0,0.86)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '9999';
+        modal.style.padding = '20px';
+
+        const enlarged = document.createElement('img');
+        enlarged.src = img.src;
+        enlarged.alt = img.alt || '';
+        enlarged.style.maxWidth = '92%';
+        enlarged.style.maxHeight = '92%';
+        enlarged.style.borderRadius = '10px';
+        enlarged.style.boxShadow = '0 0 30px rgba(255,255,255,0.04)';
+
+        const close = document.createElement('button');
+        close.innerHTML = '&times;';
+        close.style.position = 'absolute';
+        close.style.top = '18px';
+        close.style.right = '18px';
+        close.style.background = 'rgba(0,0,0,0.6)';
+        close.style.color = '#fff';
+        close.style.border = '0';
+        close.style.fontSize = '28px';
+        close.style.width = '48px';
+        close.style.height = '48px';
+        close.style.borderRadius = '8px';
+        close.style.cursor = 'pointer';
+        close.setAttribute('aria-label','Close image');
+
+        modal.appendChild(enlarged);
+        modal.appendChild(close);
+        document.body.appendChild(modal);
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        // focus handling
+        const focusable = Array.from(modal.querySelectorAll('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])'));
+        let lastFocused = document.activeElement;
+        // ensure close is first focusable
+        if(focusable.length === 0) close.setAttribute('tabindex','0');
+        close.focus();
+
+        function trap(e){
+          if(e.key !== 'Tab') return;
+          const first = modal.querySelector('[tabindex="0"]') || focusable[0];
+          const focusables = Array.from(modal.querySelectorAll('button, [href], input, textarea, [tabindex]:not([tabindex="-1"])'));
+          const firstEl = focusables[0];
+          const lastEl = focusables[focusables.length - 1];
+          if(e.shiftKey && document.activeElement === firstEl){ e.preventDefault(); lastEl.focus(); }
+          else if(!e.shiftKey && document.activeElement === lastEl){ e.preventDefault(); firstEl.focus(); }
+        }
+
+        function remove(){
+          if(modal.parentNode) modal.parentNode.removeChild(modal);
+          document.body.style.overflow = prevOverflow;
+          document.removeEventListener('keydown', onKey);
+          document.removeEventListener('keydown', trap);
+          if(opener && typeof opener.focus === 'function') opener.focus();
+        }
+        close.addEventListener('click', remove);
+        modal.addEventListener('click', (e)=>{ if(e.target===modal) remove(); });
+        function onKey(e){ if(e.key === 'Escape') remove(); }
+        document.addEventListener('keydown', onKey);
+        document.addEventListener('keydown', trap);
+      };
+    })();
+  </script>
+</body>
+</html>
